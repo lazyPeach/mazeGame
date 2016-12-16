@@ -27,7 +27,7 @@ public class Finish extends Entity {
 	public Finish() {
 		path = gp.getPath();
 		try {                
-          imageFinish = ImageIO.read(new File(path + "\\filesResource\\finish.gif"));
+          imageFinish = ImageIO.read(new File(path + "/filesResource/finish.gif"));
        } catch (IOException ex) {
             System.out.println("An exception occured while loading the finish image");
        }

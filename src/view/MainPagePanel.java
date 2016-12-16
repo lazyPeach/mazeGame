@@ -33,7 +33,7 @@ public class MainPagePanel extends JPanel{
 	MainPagePanel(LayoutManager layout, String path){
 		super(layout);
 		try{
-			background=ImageIO.read(new File(path + "\\filesResource\\mainBackground.jpg"));
+			background=ImageIO.read(new File("./filesResource/mainBackground.jpg"));
 		}catch(IOException excp){
 			System.out.println("Exception caught at buffering image" + excp.getMessage());
 		}

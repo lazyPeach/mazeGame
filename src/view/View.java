@@ -200,7 +200,7 @@ public class View extends JFrame{
 	 */
 	public void addImageToStartButton(){
 		try {
-			Image img = ImageIO.read(new File(path + "\\filesResource\\start.jpg"));
+			Image img = ImageIO.read(new File("./filesResource/start.jpg"));
 			btnStart.setIcon(new ImageIcon(img));
 			btnStart.setMargin(new Insets(0, 0, 0, 0));//make the whole button an image
 		} catch (IOException excp) {
@@ -213,7 +213,7 @@ public class View extends JFrame{
 	 */
 	public void addImageToSelectButton(){
 		try {
-		    Image img = ImageIO.read(new File(path + "\\filesResource\\select.jpg"));
+		    Image img = ImageIO.read(new File("./filesResource/select.jpg"));
 		    btnSelect.setIcon(new ImageIcon(img));
 		    btnSelect.setMargin(new Insets(0,0,0,0));
 		} catch (IOException excp) {
@@ -226,7 +226,7 @@ public class View extends JFrame{
 	 */
 	public void addImageToDoneButton(){
 		try {
-			Image img = ImageIO.read(new File(path + "\\filesResource\\done.jpg"));
+			Image img = ImageIO.read(new File("./filesResource/done.jpg"));
 			btnDone.setIcon(new ImageIcon(img));
 			btnDone.setMargin(new Insets(0, 0, 0, 0));//make the whole button an image
 		} catch (IOException excp) {
@@ -238,8 +238,9 @@ public class View extends JFrame{
 	 * Method for adding image to 'Back' button.
 	 */
 	public void addImageToBackButton(){
+		path = ".";
 		try {
-			Image img = ImageIO.read(new File(path + "\\filesResource\\back.jpg"));
+			Image img = ImageIO.read(new File(path + "/filesResource/back.jpg"));
 			btnBack.setIcon(new ImageIcon(img));
 			btnBack.setMargin(new Insets(0, 0, 0, 0));//make the whole button an image
 		} catch (IOException excp) {

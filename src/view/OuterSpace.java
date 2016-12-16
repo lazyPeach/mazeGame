@@ -27,7 +27,7 @@ public class OuterSpace extends Entity {
 	public OuterSpace() {
 		path = gp.getPath();
 		try {                
-          imageOuter = ImageIO.read(new File(path + "\\filesResource\\wall.gif"));
+          imageOuter = ImageIO.read(new File(path + "/filesResource/wall.gif"));
        } catch (IOException ex) {
             System.out.println("An exception occured while loading the outer image");
        }

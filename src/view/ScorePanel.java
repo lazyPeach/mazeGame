@@ -31,7 +31,7 @@ public class ScorePanel extends JPanel{
 	 */
 	ScorePanel(String path){
 		try{
-			scoreImage=ImageIO.read(new File(path + "\\filesResource\\moves.jpg"));
+			scoreImage=ImageIO.read(new File(path + "./filesResource/moves.jpg"));
 		}catch(IOException excp){
 			System.out.println(path);//"Exception caught at buffering for score image" + excp.getMessage());
 		}

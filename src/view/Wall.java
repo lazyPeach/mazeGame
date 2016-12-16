@@ -27,7 +27,7 @@ public class Wall extends Entity {
     public Wall() {
     	path = gp.getPath();
     	try {                
-          imageWall = ImageIO.read(new File(path + "\\filesResource\\wall.gif"));
+          imageWall = ImageIO.read(new File(path + "/filesResource/wall.gif"));
        } catch (IOException ex) {
             System.out.println("An exception occured while loading the wall image");
        }

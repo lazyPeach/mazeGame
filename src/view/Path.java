@@ -31,12 +31,12 @@ public class Path extends Entity{
     public Path() {
     	path = gp.getPath();
     	try {                
-          imagePath = ImageIO.read(new File(path +"\\filesResource\\path.gif"));
+          imagePath = ImageIO.read(new File(path +"/filesResource/path.gif"));
        } catch (IOException ex) {
             System.out.println("An exception occured while loading the path image");
        }
     	try {                
-            imageRobot = ImageIO.read(new File(path +"\\filesResource\\robot.gif"));
+            imageRobot = ImageIO.read(new File(path +"/filesResource/robot.gif"));
          } catch (IOException ex) {
               System.out.println("An exception occured while loading the path-robot image");
          }

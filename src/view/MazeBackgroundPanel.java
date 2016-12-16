@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 import java.awt.*;
@@ -34,7 +33,7 @@ public class MazeBackgroundPanel extends JPanel{
 	MazeBackgroundPanel(LayoutManager layout, String path){
 		super(layout);
 		try{
-			background= ImageIO.read(new File(path + "\\filesResource\\wallBackground.jpg"));
+			background= ImageIO.read(new File("./filesResource/wallBackground.jpg"));
 		}catch(IOException excp){
 			System.out.println("Exception caught at buffering image" + excp.getMessage());
 		}

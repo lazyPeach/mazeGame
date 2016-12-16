@@ -32,7 +32,7 @@ public class Model {
 	 * @param maze - the name of the maze selected
 	 */
 	public void createPathToMaze(String maze){
-		mazePath = path + "\\filesResource\\maze\\" + maze + ".txt";
+		mazePath = path + "/filesResource/maze/" + maze + ".txt";
 	}
 	
 	/**

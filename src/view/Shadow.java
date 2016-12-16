@@ -41,7 +41,7 @@ public class Shadow extends Entity{
     	
     	//load shadow image
     	try {                
-            imageShadow = ImageIO.read(new File(path +"\\filesResource\\shadow.gif"));
+            imageShadow = ImageIO.read(new File(path +"/filesResource/shadow.gif"));
          } catch (IOException ex) {
               System.out.println("An exception occured while loading the shadow image");
          }    	
@@ -68,12 +68,12 @@ public class Shadow extends Entity{
     		element2 = "finish";
     	}
     	try {                
-            imageShadow1 = ImageIO.read(new File(path +"\\filesResource\\" + element1 + ".gif"));
+            imageShadow1 = ImageIO.read(new File(path +"/filesResource/" + element1 + ".gif"));
          } catch (IOException ex) {
               System.out.println("An exception occured while loading the shadow1 image");
          }
     	try {                
-            imageShadow2 = ImageIO.read(new File(path +"\\filesResource\\" + element2 + ".gif"));
+            imageShadow2 = ImageIO.read(new File(path +"/filesResource/" + element2 + ".gif"));
          } catch (IOException ex) {
               System.out.println("An exception occured while loading the shadow2 image");
          }
