@@ -11,8 +11,8 @@ import controller.*;
 
 public class RunClass {
 	public static void main(String[] args){
-		View view = new View();
         Model model = new Model();
-		Controller cont = new Controller(view, model);
+        View view = new View(model);
+        Controller cont = new Controller(view, model);
 	}
 }

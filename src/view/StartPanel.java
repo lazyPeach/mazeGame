@@ -126,6 +126,7 @@ public class StartPanel extends JPanel {
          * The panel' opacity is set for visual purpose: to see the combobox on the main bakground not on a white panel.
          */
         MazeSelectionPanel(){
+
             difficultyCombo = new JComboBox<>();
             mazeCombo = new JComboBox<>();
             doneBtn = new CustomButton("Done", 100, 50);

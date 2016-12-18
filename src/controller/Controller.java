@@ -26,7 +26,8 @@ public class Controller {
 		this.view = view;
 		this.model = model;
 
-        StartController startController = new StartController(view, view.getStartPanel(), model.getMazeSelection());
+        StartController startController = new StartController(view, model);
+        PlayController playController = new PlayController(view, view.getPlayPanel(), model.getMaze());
 	}
 
 

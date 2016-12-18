@@ -1,5 +1,7 @@
 package view;
 
+import model.Maze;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,19 +12,71 @@ import java.awt.*;
  *
  */
 public class MazePanel extends JPanel{
-	private static final long serialVersionUID = 1L;
+	public static final int WIDTH = 600;
+	public static final int HEIGHT = 500;
+
+	private Maze maze;
+	private Entity[][] mazeArray;
+
+
 	private char[][] array = new char[21][30];
-	private Entity[][] mazeArray = new Entity[21][30];
 	private int lengthI,lengthJ,robotI,robotJ,i,j,finishI,finishJ,difficulty;
-	private GridLayout layout= new GridLayout(21,30);
-	
+
+
 	/**
 	 * No parameter constructor
 	 */
-	MazePanel(){
-		
+	MazePanel() {}
+
+	MazePanel(Maze maze){
+		this.maze = maze;
+
+		GridLayout layout= new GridLayout(Maze.ROWS, Maze.COLS);
+		setLayout(layout);
+
+		mazeArray = new Entity[Maze.ROWS][Maze.COLS];
+		createArray();
+		addArray();
 	}
-	
+
+	/**
+	 * Method to create the array.
+	 * The array is based on difficulty.
+	 * If the difficulty is 0 (Easy) the array if fully vissible.
+	 * If not the array is hidden and the area arround the robot and the final cell are visible.
+	 */
+	public void createArray(){
+		//todo check for difficulty
+//		if ( == ){
+			for (int i = 0; i < Maze.ROWS; i++)
+				for (int j = 0; j < Maze.COLS; j++){
+					mazeArray[i][j] = new Entity();
+					if (maze.mazeArray[i][j] == ' ') mazeArray[i][j].displayPath();
+					if (maze.mazeArray[i][j] == 'w') mazeArray[i][j].displayWall();
+					if (maze.mazeArray[i][j] == 'r') mazeArray[i][j].displayRobot();
+					if (maze.mazeArray[i][j] == 'f') mazeArray[i][j].displayFinish();
+				}
+
+//		}
+//		else{
+//			for (int i = 0; i<lengthI;i++)
+//				for (int j = 0; j<lengthJ; j++){
+//					mazeArray[i][j]=new Shadow(array[i][j]);
+//				}
+//			mazeArray[robotI][robotJ].updateNext();
+//			mazeArray[finishI][finishJ].updateNext();
+//			updateAroundMedium(robotI,robotJ);
+//		}
+	}
+
+	private void addArray() {
+		for (int i = 0; i< Maze.ROWS; i++) {
+			for (int j = 0; j < Maze.COLS; j++) {
+				add(mazeArray[i][j]);
+			}
+		}
+	}
+
 	/**
 	 * Constructor which gets as parameters the char array representing the maze, the number of columns and rows and the difficulty.
 	 * The constructor sets the parameters and calls the method createArray(); 
@@ -31,20 +85,6 @@ public class MazePanel extends JPanel{
 	 * @param lengthJ - number of collumns
 	 * @param difficulty
 	 */
-	MazePanel(char[][] array, int lengthI, int lengthJ, int difficulty){
-		setLayout(layout);
-		this.array=array;
-		this.lengthI=lengthI;
-		this.lengthJ=lengthJ;
-		this.difficulty=difficulty;
-		
-		createArray();
-		for (int i=0;i<lengthI;i++)
-			for (int j=0;j<lengthJ;j++){
-				add(mazeArray[i][j]);
-			}
-		setOpaque(false);
-	}
 	
 	/**
 	 * Method to get the row on which the robot is situated.
@@ -86,38 +126,7 @@ public class MazePanel extends JPanel{
 					finishJ=j;
 	}
 	
-	/**
-	 * Method to create the array.
-	 * The array is based on difficulty.
-	 * If the difficulty is 0 (Easy) the array if fully vissible.
-	 * If not the array is hidden and the area arround the robot and the final cell are visible.
-	 */
-	public void createArray(){
-		getRobotI();
-		getRobotJ();
-		getFinishI();
-		getFinishJ();
-		if (this.difficulty == 0){
-			for (int i = 0; i<lengthI;i++)
-				for (int j = 0; j<lengthJ; j++){
-					if (array[i][j] == ' ') mazeArray[i][j]=new Path();
-					if (array[i][j] == 'w') mazeArray[i][j]=new Wall();
-					if (array[i][j] == 'o') mazeArray[i][j]=new OuterSpace();
-					if (array[i][j] == 'r') mazeArray[i][j]=new Robot();
-					if (array[i][j] == 'f') mazeArray[i][j]=new Finish();
-				}
-			
-		}
-		else{
-			for (int i = 0; i<lengthI;i++)
-				for (int j = 0; j<lengthJ; j++){
-					mazeArray[i][j]=new Shadow(array[i][j]);
-				}
-			mazeArray[robotI][robotJ].updateNext();
-			mazeArray[finishI][finishJ].updateNext();
-			updateAroundMedium(robotI,robotJ);
-		}
-	}
+
 	
 	/**
 	 * Method to update the visual maze according to the movement: if we want and can move up switch upper cell with robot, etc.
@@ -128,27 +137,27 @@ public class MazePanel extends JPanel{
 	 * @param down
 	 * @param left
 	 */
-	public void updateEasy(boolean up, boolean right, boolean down, boolean left){
-		
-		if (up){
-			mazeArray[robotI][robotJ].update();
-			mazeArray[robotI-1][robotJ].update();
-		}
-		if (right){
-			mazeArray[robotI][robotJ].update();
-			mazeArray[robotI][robotJ+1].update();
-		}
-		if (down){
-			mazeArray[robotI][robotJ].update();
-			mazeArray[robotI+1][robotJ].update();
-		}
-		if (left){
-			mazeArray[robotI][robotJ].update();
-			mazeArray[robotI][robotJ-1].update();
-		}
-		getRobotI();
-		getRobotJ();
-	}
+//	public void updateEasy(boolean up, boolean right, boolean down, boolean left){
+//
+//		if (up){
+//			mazeArray[robotI][robotJ].update();
+//			mazeArray[robotI-1][robotJ].update();
+//		}
+//		if (right){
+//			mazeArray[robotI][robotJ].update();
+//			mazeArray[robotI][robotJ+1].update();
+//		}
+//		if (down){
+//			mazeArray[robotI][robotJ].update();
+//			mazeArray[robotI+1][robotJ].update();
+//		}
+//		if (left){
+//			mazeArray[robotI][robotJ].update();
+//			mazeArray[robotI][robotJ-1].update();
+//		}
+//		getRobotI();
+//		getRobotJ();
+//	}
 	
 	/**
 	 * Method to update the visual maze according to the movement: if we want and can move up switch upper cell with robot, etc.
@@ -162,13 +171,13 @@ public class MazePanel extends JPanel{
 	 * @param down
 	 * @param left
 	 */
-	public void updateMedium(boolean up, boolean right, boolean down, boolean left){
-		getRobotI();
-		getRobotJ();
-		mazeArray[robotI][robotJ].updateFirst();
-		mazeArray[robotI][robotJ].updateNext();
-		updateAroundMedium(robotI,robotJ);
-	}
+//	public void updateMedium(boolean up, boolean right, boolean down, boolean left){
+//		getRobotI();
+//		getRobotJ();
+//		mazeArray[robotI][robotJ].updateFirst();
+//		mazeArray[robotI][robotJ].updateNext();
+//		updateAroundMedium(robotI,robotJ);
+//	}
 	
 	/**
 	 * Method to update the visual maze according to the movement: if we want and can move up switch upper cell with robot, etc.
@@ -181,25 +190,25 @@ public class MazePanel extends JPanel{
 	 * @param down
 	 * @param left
 	 */
-	public void updateHard(boolean up,boolean right,boolean down, boolean left){
-		getRobotI();
-		getRobotJ();
-		mazeArray[robotI][robotJ].updateFirst();
-		mazeArray[robotI][robotJ].updateNext();
-		updateAroundMedium(robotI,robotJ);
-		if (up){
-			updateUp(robotI,robotJ);
-		}
-		if (right){
-			updateRight(robotI,robotJ);
-		}
-		if (down){
-			updateDown(robotI,robotJ);
-		}
-		if (left){
-			updateLeft(robotI,robotJ);
-		}
-	}
+//	public void updateHard(boolean up,boolean right,boolean down, boolean left){
+//		getRobotI();
+//		getRobotJ();
+//		mazeArray[robotI][robotJ].updateFirst();
+//		mazeArray[robotI][robotJ].updateNext();
+//		updateAroundMedium(robotI,robotJ);
+//		if (up){
+//			updateUp(robotI,robotJ);
+//		}
+//		if (right){
+//			updateRight(robotI,robotJ);
+//		}
+//		if (down){
+//			updateDown(robotI,robotJ);
+//		}
+//		if (left){
+//			updateLeft(robotI,robotJ);
+//		}
+//	}
 	
 	/**
 	 * Updates each cell around the robot position.
@@ -207,89 +216,89 @@ public class MazePanel extends JPanel{
 	 * @param robotI - robot's row
 	 * @param robotJ - robot's column
 	 */
-	public void updateAroundMedium(int robotI, int robotJ){
-		try{
-			mazeArray[robotI-1][robotJ].updateLast();
-			mazeArray[robotI-1][robotJ+1].updateLast();
-			mazeArray[robotI-1][robotJ-1].updateLast();
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("Exception above the robot");
-		}
-		try{
-			mazeArray[robotI+1][robotJ].updateLast();
-			mazeArray[robotI+1][robotJ+1].updateLast();
-			mazeArray[robotI+1][robotJ-1].updateLast();
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("Exception below the robot");
-		}
-		try{
-			mazeArray[robotI][robotJ+1].updateLast();
-			mazeArray[robotI][robotJ-1].updateLast();
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println("Exception to the left or right of robot.");
-		}
-	}
+//	public void updateAroundMedium(int robotI, int robotJ){
+//		try{
+//			mazeArray[robotI-1][robotJ].updateLast();
+//			mazeArray[robotI-1][robotJ+1].updateLast();
+//			mazeArray[robotI-1][robotJ-1].updateLast();
+//		}catch(ArrayIndexOutOfBoundsException e){
+//			System.out.println("Exception above the robot");
+//		}
+//		try{
+//			mazeArray[robotI+1][robotJ].updateLast();
+//			mazeArray[robotI+1][robotJ+1].updateLast();
+//			mazeArray[robotI+1][robotJ-1].updateLast();
+//		}catch(ArrayIndexOutOfBoundsException e){
+//			System.out.println("Exception below the robot");
+//		}
+//		try{
+//			mazeArray[robotI][robotJ+1].updateLast();
+//			mazeArray[robotI][robotJ-1].updateLast();
+//		}catch(ArrayIndexOutOfBoundsException e){
+//			System.out.println("Exception to the left or right of robot.");
+//		}
+//	}
 	
 	/**
 	 * Checks for robot position and updates the cells which were set to visible before back to shadow.
 	 * @param robotI - robot's row
 	 * @param robotJ - robot's column
 	 */
-	public void updateUp(int robotI,int robotJ){
-		try{
-			mazeArray[robotI+2][robotJ].updateFirst();
-			mazeArray[robotI+2][robotJ+1].updateFirst();
-			mazeArray[robotI+2][robotJ-1].updateFirst();
-			}catch(ArrayIndexOutOfBoundsException e){
-				System.out.println(" ");
-			}
-	}
+//	public void updateUp(int robotI,int robotJ){
+//		try{
+//			mazeArray[robotI+2][robotJ].updateFirst();
+//			mazeArray[robotI+2][robotJ+1].updateFirst();
+//			mazeArray[robotI+2][robotJ-1].updateFirst();
+//			}catch(ArrayIndexOutOfBoundsException e){
+//				System.out.println(" ");
+//			}
+//	}
 	
 	/**
 	 * Checks for robot position and updates the cells which were set to visible before back to shadow.
 	 * @param robotI - robot's row
 	 * @param robotJ - robot's column
 	 */
-	public void updateDown(int robotI, int robotJ){
-		try{
-			mazeArray[robotI-2][robotJ].updateFirst();
-			mazeArray[robotI-2][robotJ+1].updateFirst();
-			mazeArray[robotI-2][robotJ-1].updateFirst();
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println(" ");
-		}
-	}
+//	public void updateDown(int robotI, int robotJ){
+//		try{
+//			mazeArray[robotI-2][robotJ].updateFirst();
+//			mazeArray[robotI-2][robotJ+1].updateFirst();
+//			mazeArray[robotI-2][robotJ-1].updateFirst();
+//		}catch(ArrayIndexOutOfBoundsException e){
+//			System.out.println(" ");
+//		}
+//	}
 	
 	/**
 	 * Checks for robot position and updates the cells which were set to visible before back to shadow.
 	 * @param robotI - robot's row
 	 * @param robotJ - robot's column
 	 */
-	public void updateLeft(int robotI, int robotJ){
-		try{
-			mazeArray[robotI][robotJ+2].updateFirst();
-			mazeArray[robotI-1][robotJ+2].updateFirst();
-			mazeArray[robotI+1][robotJ+2].updateFirst();
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println(" ");
-		}
-	}
+//	public void updateLeft(int robotI, int robotJ){
+//		try{
+//			mazeArray[robotI][robotJ+2].updateFirst();
+//			mazeArray[robotI-1][robotJ+2].updateFirst();
+//			mazeArray[robotI+1][robotJ+2].updateFirst();
+//		}catch(ArrayIndexOutOfBoundsException e){
+//			System.out.println(" ");
+//		}
+//	}
 	
 	/**
 	 * Checks for robot position and updates the cells which were set to visible before back to shadow.
 	 * @param robotI - robot's row
 	 * @param robotJ - robot's column
 	 */
-	public void updateRight(int robotI, int robotJ){
-		try{
-			mazeArray[robotI][robotJ-2].updateFirst();
-			mazeArray[robotI-1][robotJ-2].updateFirst();
-			mazeArray[robotI+1][robotJ-2].updateFirst();
-		}catch(ArrayIndexOutOfBoundsException e){
-			System.out.println(" ");
-		}
-	}
-	
+//	public void updateRight(int robotI, int robotJ){
+//		try{
+//			mazeArray[robotI][robotJ-2].updateFirst();
+//			mazeArray[robotI-1][robotJ-2].updateFirst();
+//			mazeArray[robotI+1][robotJ-2].updateFirst();
+//		}catch(ArrayIndexOutOfBoundsException e){
+//			System.out.println(" ");
+//		}
+//	}
+//
 	/**
 	 * Method to verify if the robot is in the final position.
 	 * @return true if the robot is in the final position and false otherwise

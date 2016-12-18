@@ -10,9 +10,17 @@ import java.awt.event.*;
 
 public class View extends JFrame{
 	private final int width = 800;
-	private final int height = 525;
+	private final int height = 535;
+	private Model model;
 	private JPanel mainPanel;
 	private StartPanel startPanel;
+	private PlayPanel playPanel;
+	private CreatePanel createPanel;
+
+	private final String START = "start";
+	private final String PLAY = "play";
+	private final String CREATE = "create";
+
 
 
 
@@ -20,19 +28,16 @@ public class View extends JFrame{
 	private String mazeName = new String();
 	private String difficulty = new String();
 	private String path = new String();
-	private Model model = new Model();
-	private JButton btnDone = new JButton();
 	private JButton btnBack = new JButton();
-	private JPanel buttonPanel = new JPanel();
 	private JPanel scorePanel = new JPanel();
 	private JPanel field = new JPanel();
-	private MazeBackgroundPanel mazeBackgroundPanel = new MazeBackgroundPanel();
-	private ScorePanel moves = new ScorePanel();
+//	private MazeBackgroundPanel mazeBackgroundPanel = new MazeBackgroundPanel();
+//	private MovesPanel moves = new MovesPanel();
 	private JTextField movestxt = new JTextField(5);
 	private JTextField finalScore = new JTextField(5);
-
-	private MazePanel mazePanel = new MazePanel();
-	private FinalBackground finalPanel = new FinalBackground();
+//// TODO: 12/18/16 get rid of this var
+//	private MazePanel mazePanel = new MazePanel();
+	private FinalPanel finalPanel = new FinalPanel();
 	private int diff = 0;
 
 
@@ -43,13 +48,20 @@ public class View extends JFrame{
 	 * The the close operation, the frame name and the visibility is also set in the constructor.
 	 * @param model
 	 */
-	public View(){
+	public View(Model model){
+		this.model = model;
+
 		mainPanel = new JPanel();
 		setContentPane(mainPanel);
 		mainPanel.setLayout(new CardLayout());
 
 		startPanel = new StartPanel();
-		mainPanel.add(startPanel, "StartPanel");
+		playPanel = new PlayPanel(model);
+		createPanel = new CreatePanel();
+
+		mainPanel.add(startPanel, START);
+		mainPanel.add(playPanel, PLAY);
+		mainPanel.add(createPanel, CREATE);
 
 		this.setTitle("Robot in a Maze");
 		jFrameSetup();
@@ -66,34 +78,24 @@ public class View extends JFrame{
 		return startPanel;
 	}
 
-	//// TODO: 12/18/16  
-//	public void showMazeSelection() {
-//		startPanel.switchToMazeSelection();
-//	}
-//
-//	public void showStartButtons() {
-//		startPanel.switchToStartButtons();
-//	}
-//
-//
-//
-//
-//
-//
-//	public void addStartListener(ActionListener startListener) {
-//		startPanel.addStartListener(startListener);
-//	}
-//
-//	public void addSelectListener(ActionListener selectListener) {
-//		startPanel.addSelectListener(selectListener);
-//	}
-//
-//	public void addCreateListener(ActionListener createListener) {
-//		startPanel.addCreateListener(createListener);
-//	}
+	public PlayPanel getPlayPanel() {
+		return playPanel;
+	}
 
+	public void switchToStart() {
+		CardLayout cl = (CardLayout)(mainPanel.getLayout());
+		cl.show(mainPanel, START);
+	}
 
+	public void switchToPlay() {
+		CardLayout cl = (CardLayout)(mainPanel.getLayout());
+		cl.show(mainPanel, PLAY);
+	}
 
+	public void switchToCreate() {
+		CardLayout cl = (CardLayout)(mainPanel.getLayout());
+		cl.show(mainPanel, CREATE);
+	}
 
 
 	/**
@@ -153,11 +155,9 @@ public class View extends JFrame{
 		scorePanel.removeAll();
 		addImageToBackButton();
 		createTextField();
-		moves = new ScorePanel(path);
-		scorePanel.add(new VoidPanel(3));
-		scorePanel.add(moves);
+		//moves = new MovesPanel(path);
+//		scorePanel.add(moves);
 		scorePanel.add(field);
-		scorePanel.add(new VoidPanel(15));
 		scorePanel.add(btnBack);
 		scorePanel.setOpaque(false);
 		scorePanel.setLayout(new BoxLayout(scorePanel, BoxLayout.PAGE_AXIS));
@@ -168,25 +168,25 @@ public class View extends JFrame{
 	 * Method for setting the background of the main panel with the maze.
 	 * The scorePanel is added in the right part.
 	 */
-	public void setMazeBackground(){
-		mazeBackgroundPanel = new MazeBackgroundPanel(new BorderLayout(),path);
-		createScorePanel();
-		mazeBackgroundPanel.add(scorePanel,BorderLayout.EAST);
-		mazeBackgroundPanel.repaint();
-		this.setContentPane(mazeBackgroundPanel);
-		this.pack();
-	}
+//	public void setMazeBackground(){
+//		mazeBackgroundPanel = new MazeBackgroundPanel(new BorderLayout(),path);
+//		createScorePanel();
+//		mazeBackgroundPanel.add(scorePanel,BorderLayout.EAST);
+//		mazeBackgroundPanel.repaint();
+//		this.setContentPane(mazeBackgroundPanel);
+//		this.pack();
+//	}
 	
 	/**
 	 * Method for removing the maze from the background panel.
 	 * The method also removes the 'Back' button and the TextField with moves.
 	 */
-	public void removeMaze(){
-		mazeBackgroundPanel.removeAll();
-		mazeBackgroundPanel.repaint();
-		this.remove(mazeBackgroundPanel);
-		this.repaint();
-	}
+//	public void removeMaze(){
+//		mazeBackgroundPanel.removeAll();
+//		mazeBackgroundPanel.repaint();
+//		this.remove(mazeBackgroundPanel);
+//		this.repaint();
+//	}
 	
 	/**
 	 * Method for getting the maze name from ComboBox.
@@ -217,11 +217,11 @@ public class View extends JFrame{
 	 * @param lengthJ - number of columns
 	 */
 	public void loadInitialMaze(char[][] array, int lengthI, int lengthJ){
-		mazePanel = new MazePanel(array,lengthI,lengthJ,getDifficulty());
-		mazeBackgroundPanel.add(mazePanel,BorderLayout.WEST);
-		mazeBackgroundPanel.repaint();
-		mazeBackgroundPanel.validate();
-		this.setSize(800,525);
+//		mazePanel = new MazePanel(array,lengthI,lengthJ,getDifficulty());
+//		mazeBackgroundPanel.add(mazePanel,BorderLayout.WEST);
+//		mazeBackgroundPanel.repaint();
+//		mazeBackgroundPanel.validate();
+//		this.setSize(800,525);
 	}
 	
 	/**
@@ -233,10 +233,10 @@ public class View extends JFrame{
 	 * @param left
 	 */
 	public void updateMaze(boolean up, boolean right, boolean down, boolean left){
-		if (diff == 0)	mazePanel.updateEasy(up,right,down,left);
-		if (diff == 1) mazePanel.updateMedium(up,right,down,left);
-		if (diff == 2) mazePanel.updateHard(up,right,down,left);
-		if (mazePanel.verifyFinal()) finalBack();
+//		if (diff == 0)	mazePanel.updateEasy(up,right,down,left);
+//		if (diff == 1) mazePanel.updateMedium(up,right,down,left);
+//		if (diff == 2) mazePanel.updateHard(up,right,down,left);
+//		if (mazePanel.verifyFinal()) finalBack();
 	}
 	
 	/**
@@ -244,7 +244,6 @@ public class View extends JFrame{
 	 * In the final panel the score is displayed and a 'Back' buttons is added to be able to go back to main page.
 	 */
 	public void finalBack(){
-		this.remove(mazeBackgroundPanel);
 		JPanel align = new JPanel();
 		JLabel message = new JLabel("Score: ",JLabel.CENTER);
 		message.setFont(new Font("Arial",Font.BOLD,20));
@@ -256,7 +255,7 @@ public class View extends JFrame{
 		align.add(btnBack);
 		align.setOpaque(false);
 		align.setLayout(new BoxLayout(align,BoxLayout.PAGE_AXIS));
-		finalPanel =new FinalBackground(path);
+		finalPanel =new FinalPanel(path);
 		finalScore.setEditable(false);
 		finalScore.setText(model.getScore());
 		finalPanel.setLayout(new BorderLayout());

@@ -1,6 +1,8 @@
 package controller;
 
+import model.Maze;
 import model.MazeSelection;
+import model.Model;
 import view.View;
 import view.StartPanel;
 
@@ -12,13 +14,16 @@ import java.awt.event.ActionListener;
  */
 public class StartController {
     private View view;
+    private Model model;
     private StartPanel startPanel;
     private MazeSelection mazeSelection;
 
-    StartController(View view, StartPanel startPanel, MazeSelection mazeSelection) {
+    StartController(View view, Model model) {
         this.view = view;
-        this.startPanel = startPanel;
-        this.mazeSelection = mazeSelection;
+        this.model = model;
+
+        startPanel = view.getStartPanel();
+        mazeSelection = model.getMazeSelection();
 
         startPanel.addStartListener(new StartListener());
         startPanel.addSelectListener(new SelectListener());
@@ -35,6 +40,7 @@ public class StartController {
     //// TODO: 12/18/16
     private class StartListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
+            view.switchToPlay();
 //            view.addMazeKeyListener(listener);
 //            model.createPathToMaze(view.getMazeName());
 //            model.loadMaze();
@@ -57,8 +63,7 @@ public class StartController {
 
     private class CreateListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            //TODO
-            //view.addComboBox();
+            view.switchToCreate();
         }
     }
 
@@ -70,6 +75,7 @@ public class StartController {
         public void actionPerformed(ActionEvent e){
             mazeSelection.setDifficulty(startPanel.getSelectedDifficulty());
             mazeSelection.setMazeName(startPanel.getSelectedMaze());
+            model.setMaze(new Maze(mazeSelection.getMazeName(), mazeSelection.getMazePath(), mazeSelection.getDifficulty()));
             startPanel.switchToStartButtons();
         }
     }

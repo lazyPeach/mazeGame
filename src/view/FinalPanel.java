@@ -6,36 +6,33 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.awt.*;
 
 /**
- * Class used for setting the image and the layout of the maze panel.
+ * Class used for setting the background image of the final JPanel, the panel which appears when the robot find the end of the maze.
  * @author Lorenzo-Eusebio Patras
  *
  */
-public class MazeBackgroundPanel extends JPanel{
+public class FinalPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private BufferedImage background;
 	
 	/**
-	 * No parameter constructor.
+	 * No parameter constructor
 	 */
-	MazeBackgroundPanel(){
-		this(new FlowLayout(),new String());
+	FinalPanel(){
+		this(new String());
 	}
 	
 	/**
-	 * Constructor with a layout and a string parameter which represents the path to the project. 
-	 * The layout of the JPanel is set. 
-	 * @param Layout of the JPanel
-	 * @param Path to the background image
+	 * Constructor with a string parameter.
+	 * The background image is read from file and loaded in the constructor. The path is used for portability.
+	 * @param path to the background image
 	 */
-	MazeBackgroundPanel(LayoutManager layout, String path){
-		super(layout);
+	FinalPanel(String path){
 		try{
-			background= ImageIO.read(new File("./filesResource/wallBackground.jpg"));
+			background=ImageIO.read(new File(path + "/filesResource/final.jpg"));
 		}catch(IOException excp){
-			System.out.println("Exception caught at buffering image" + excp.getMessage());
+			System.out.println("Exception caught at buffering final image" + excp.getMessage());
 		}
 	}
 	

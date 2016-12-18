@@ -9,6 +9,8 @@ import java.io.*;
  */
 public class Model {
 	private MazeSelection mazeSelection;
+    private Maze maze;
+
 
 	private String mazePath;
 	private String path;
@@ -27,13 +29,20 @@ public class Model {
 	 */
 	public Model(){
 		mazeSelection = new MazeSelection();
-
+        maze = new Maze(mazeSelection.getMazeName(), mazeSelection.getMazePath(), mazeSelection.getDifficulty());
 	}
 
 	public MazeSelection getMazeSelection() {
         return mazeSelection;
     }
 
+    public Maze getMaze() {
+        return maze;
+    }
+
+    public void setMaze(Maze maze) {
+        this.maze = maze;
+    }
 
 
     // // TODO: 12/18/16
@@ -46,47 +55,9 @@ public class Model {
 		mazePath = path + "/filesResource/maze/" + maze + ".txt";
 	}
 	
-	/**
-	 * Read from the .txt file in which the maze is.
-	 * It uses the FileReader  and BufferedReader classes to read from file and calls the function readFromFile() to create
-	 * the array on which all the actions will be performed.
-	 */
-	public void loadMaze(){
-		try{
-			fr = new FileReader(mazePath);
-		}catch (FileNotFoundException e){
-			System.out.println("Maze not found" + e.getMessage());
-		}
-		br = new BufferedReader(fr);
-		readFromFile();	
-	}
-	
-	/**
-	 * Create the array on which the program works.
-	 * Initially the array indexes are initialised otherwise the program could throw an OutOfBoundsException at a further call
-	 * of this method.
-	 * This method uses the built-in method readLine() of BufferedReader to read one line at a time. Then it reads character by
-	 * character until the end of file and updates the array of chars.  
-	 */
-	public void readFromFile(){
-		i=0;
-		j=0;
-		lengthI=0;
-		lengthJ=0;
-		try{
-			String line =new String();
-			while((line = br.readLine())!= null){
-				for (j = 0; j<line.length();j++){
-					array[i][j]=line.charAt(j);
-				}
-				i++;
-			}
-			lengthJ=j;
-			lengthI=i;
-		}catch(IOException e){
-			System.out.println("IOException:" + e.getMessage());
-		}
-	}
+
+
+
 	
 	/**
 	 * Set the difficulty of the maze.

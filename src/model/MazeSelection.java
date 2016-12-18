@@ -62,6 +62,10 @@ public class MazeSelection {
         return mazeName;
     }
 
+    public String getMazePath() {
+        return mazeMap.get(mazeName);
+    }
+
     public Difficulty getDifficulty() {
         return difficulty;
     }
