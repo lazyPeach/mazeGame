@@ -43,7 +43,7 @@ public class Controller {
 	class BackListener implements MouseListener{
 		public void mouseClicked(MouseEvent e) {
 			view.removeMazeKeyListener(listener);
-			view.removeMaze();
+//			view.removeMaze();
 			//TODO REMOVE METHOD
 //			view.constructMainPage();
 		}

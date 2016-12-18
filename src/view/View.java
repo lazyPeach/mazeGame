@@ -31,12 +31,8 @@ public class View extends JFrame{
 	private JButton btnBack = new JButton();
 	private JPanel scorePanel = new JPanel();
 	private JPanel field = new JPanel();
-//	private MazeBackgroundPanel mazeBackgroundPanel = new MazeBackgroundPanel();
-//	private MovesPanel moves = new MovesPanel();
 	private JTextField movestxt = new JTextField(5);
 	private JTextField finalScore = new JTextField(5);
-//// TODO: 12/18/16 get rid of this var
-//	private MazePanel mazePanel = new MazePanel();
 	private FinalPanel finalPanel = new FinalPanel();
 	private int diff = 0;
 
@@ -248,10 +244,8 @@ public class View extends JFrame{
 		JLabel message = new JLabel("Score: ",JLabel.CENTER);
 		message.setFont(new Font("Arial",Font.BOLD,20));
 		message.setForeground(Color.white);
-		align.add(new VoidPanel(300));
 		align.add(message);
 		align.add(finalScore);
-		align.add(new VoidPanel(300));
 		align.add(btnBack);
 		align.setOpaque(false);
 		align.setLayout(new BoxLayout(align,BoxLayout.PAGE_AXIS));

@@ -30,7 +30,7 @@ public class FinalPanel extends JPanel{
 	 */
 	FinalPanel(String path){
 		try{
-			background=ImageIO.read(new File(path + "/filesResource/final.jpg"));
+			background=ImageIO.read(new File(path + "./filesResource/final.jpg"));
 		}catch(IOException excp){
 			System.out.println("Exception caught at buffering final image" + excp.getMessage());
 		}
