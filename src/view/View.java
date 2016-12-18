@@ -10,6 +10,12 @@ import java.awt.event.*;
 
 public class View extends JFrame{
 	private static final long serialVersionUID = 1L;
+	private final int width = 800;
+	private final int height = 525;
+	private JPanel mainPanel;
+	private StartPanel startPanel;
+
+
 	private String mazeName = new String();
 	private String difficulty = new String();
 	private String path = new String();
@@ -21,7 +27,6 @@ public class View extends JFrame{
 	private JPanel buttonPanel = new JPanel();
 	private JPanel scorePanel = new JPanel();
 	private JPanel field = new JPanel();
-	private MainPagePanel mainPanel = new MainPagePanel();
 	private MazeBackgroundPanel mazeBackgroundPanel = new MazeBackgroundPanel();
 	private ScorePanel moves = new ScorePanel();
 	private JTextField movestxt = new JTextField(5);
@@ -41,95 +46,39 @@ public class View extends JFrame{
 	 */
 	public View(Model model){
 		this.model=model;
-		path = model.getPath();
-		mainPanel = new MainPagePanel(new BorderLayout(),path);
-		constructMainPage();
+		path = "";
+
+		mainPanel = new JPanel();
+		setContentPane(mainPanel);
+		mainPanel.setLayout(new CardLayout());
+
+		startPanel = new StartPanel();
+		mainPanel.add(startPanel, "StartPanel");
+		//constructMainPage();
+
 		this.setTitle("Robot in a Maze");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jFrameSetup();
+	}
+
+	private void jFrameSetup() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(width, height);
 		setVisible(true);
+		setResizable(false);
 	}
-	
-	/**
-	 * Call to createButtonPanel - a panel with buttons set in the right side of the window using BorderLayout.EAST.
-	 * mainPanel.removeAll() is called just for safety, to be sure that there is nothing left on the mainPanel.
-	 * Here the size of the frame is also set.
-	 */
-	public void constructMainPage(){
-		createButtonPanel();
-		mainPanel.removeAll();
-		mainPanel.validate();
-		mainPanel.add(buttonPanel,BorderLayout.EAST);
-		addMainPanel();
-		this.setSize(800,525);
+
+	public void addStartListener(ActionListener startListener) {
+		startPanel.addStartListener(startListener);
 	}
-	
-	/**
-	 * Method to set the mainPanel on the frame using pre-built methods in JFrame: setContentPane() and pack().
-	 */
-	public void addMainPanel(){
-		this.setContentPane(mainPanel);
-		this.pack();
+
+	public void addSelectListener(ActionListener selectListener) {
+		startPanel.addSelectListener(selectListener);
 	}
-	
-	/**
-	 * Method for removing everything from the frame.
-	 * Pre-built method validate is necessary for viewing the result. Otherwise the content will be erased but the frame visual elements 
-	 * will remain.
-	 */
-	public void removeMainPanel(){
-		this.removeAll();
-		this.validate();
+
+	public void addCreateListener(ActionListener createListener) {
+		startPanel.addCreateListener(createListener);
 	}
-	
-	/**
-	 * Method for creating the button panel.
-	 * The methods for adding images to 'Start' and 'Select' buttons are called.
-	 * The panel's layout will be BoxLayout for arranging the buttons on a vertical axis.
-	 * The panel opacity is set to false for visual reasons.
-	 */
-	public void createButtonPanel(){
-		buttonPanel.removeAll();
-		addImageToStartButton();
-		addImageToSelectButton();
-		BoxLayout buttonLayout = new BoxLayout(buttonPanel,BoxLayout.PAGE_AXIS);
-		buttonPanel.setLayout (buttonLayout);
-		addButtons();
-		buttonPanel.setOpaque(false);
-		buttonPanel.validate();
-		this.validate();
-	}
-	
-	/**
-	 * Method for removing the buttonPanel from mainPanel.
-	 */
-	public void removeButtonPanel(){
-		mainPanel.removeAll();
-		mainPanel.validate();
-		this.validate();
-	}
-	
-	/**
-	 * Method for adding buttons to buttonPanel.
-	 * For space between buttons instances of VoidPanel class are used.
-	 */
-	public void addButtons(){
-		buttonPanel.add(new VoidPanel());
-		buttonPanel.add(btnStart);
-		buttonPanel.add(new VoidPanel(10));
-		buttonPanel.add(btnSelect);
-		buttonPanel.add(new VoidPanel(280));
-		buttonPanel.validate();
-		this.validate();
-	}
-	
-	/**
-	 * Method to remove buttons from buttonPanel.
-	 */
-	public void removeButtons(){
-		buttonPanel.removeAll();
-		buttonPanel.validate();
-		this.validate();
-	}
+
 	
 	/**
 	 * Method for adding the 'Done' button to buttonPanel.
@@ -173,7 +122,7 @@ public class View extends JFrame{
 	 * The ComboBoxes are added instead of 'Start' and 'Select' buttons in the right side of the mainPanel.
 	 */
 	public void addComboBox(){
-		removeButtons();
+		//removeButtons();
 		buttonPanel.add(new VoidPanel(35));
 		buttonPanel.add(comboBoxMaze);
 		buttonPanel.add(new VoidPanel(15));
@@ -190,37 +139,12 @@ public class View extends JFrame{
 	 */
 	public void removeComboBox(){
 		buttonPanel.removeAll();
-		addButtons();
+//		addButtons();
 		buttonPanel.validate();
 		this.validate();
 	}
 	
-	/**
-	 * Method for adding image to 'Start' button.
-	 */
-	public void addImageToStartButton(){
-		try {
-			Image img = ImageIO.read(new File("./filesResource/start.jpg"));
-			btnStart.setIcon(new ImageIcon(img));
-			btnStart.setMargin(new Insets(0, 0, 0, 0));//make the whole button an image
-		} catch (IOException excp) {
-			  System.out.println("Exception caught at buffering startButton image" + excp.getMessage());
-		  }
-	}
-	
-	/**
-	 * Method for adding image to 'Select' button.
-	 */
-	public void addImageToSelectButton(){
-		try {
-		    Image img = ImageIO.read(new File("./filesResource/select.jpg"));
-		    btnSelect.setIcon(new ImageIcon(img));
-		    btnSelect.setMargin(new Insets(0,0,0,0));
-		} catch (IOException excp) {
-			  System.out.println("Exception caught at buffering selectButton image" + excp.getMessage());
-		  }
-	}
-	
+
 	/**
 	 * Method for adding image to 'Done' button.
 	 */
