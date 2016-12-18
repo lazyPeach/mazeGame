@@ -31,7 +31,7 @@ public class View extends JFrame{
 	private ScorePanel moves = new ScorePanel();
 	private JTextField movestxt = new JTextField(5);
 	private JTextField finalScore = new JTextField(5);
-	private MazeSelection comboBoxMaze = new MazeSelection();
+	private MazeSelectionPanel comboBoxMaze = new MazeSelectionPanel();
 	private DifficultySelection comboBoxDiff = new DifficultySelection();
 	private MazePanel mazePanel = new MazePanel();
 	private FinalBackground finalPanel = new FinalBackground();

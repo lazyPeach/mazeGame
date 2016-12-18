@@ -70,7 +70,18 @@ public class Controller {
             //view.addComboBox();
         }
     }
-	
+
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * Listener for Done button. The only method necessary form MouseListener is MouseClicked() in which we call the method removeComboBox()
 	 * from View and give a value to mazeName. The difficulty is also set.

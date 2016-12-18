@@ -10,7 +10,7 @@ import javax.swing.*;
  * @author Lorenzo-Eusebio Patras
  *
  */
-public class MazeSelection extends JPanel
+public class MazeSelectionPanel extends JPanel
 	implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	
@@ -22,7 +22,7 @@ public class MazeSelection extends JPanel
 	 * In the constructor, the implicit maze is set to 0 (maze1), an action listener is added, the ComboBox is added to the JPanel.
 	 * The panel' opacity is set for visual purpose: to see the combobox on the main bakground not on a white panel.
 	 */
-	MazeSelection(){
+	MazeSelectionPanel(){
 		mazeList.setSelectedIndex(0);
 		mazeList.addActionListener(this);
 		add(mazeList);

@@ -10,10 +10,7 @@ import java.io.IOException;
 
 class StartPanel extends JPanel {
     private BufferedImage background;
-    private JButton startBtn;
-    private JButton selectBtn;
-    private JButton createBtn;
-
+    StartButtonsPanel buttonPanel;
 
     /**
      * Constructor that creates a panel with border layout
@@ -23,19 +20,21 @@ class StartPanel extends JPanel {
 
         setSize(800, 525);
         setBackgroundImage();
-        addButtons();
+
+        buttonPanel = new StartButtonsPanel();
+        add(buttonPanel,BorderLayout.EAST);
     }
 
     void addStartListener(ActionListener startListener) {
-        startBtn.addActionListener(startListener);
+        buttonPanel.startBtn.addActionListener(startListener);
     }
 
     void addSelectListener(ActionListener selectListener) {
-        selectBtn.addActionListener(selectListener);
+        buttonPanel.selectBtn.addActionListener(selectListener);
     }
 
     void addCreateListener(ActionListener createListener) {
-        createBtn.addActionListener(createListener);
+        buttonPanel.createBtn.addActionListener(createListener);
     }
 
     private void setBackgroundImage() {
@@ -46,25 +45,6 @@ class StartPanel extends JPanel {
         }
     }
 
-    private void addButtons() {
-        JPanel buttonPanel = new JPanel();
-        BoxLayout buttonLayout = new BoxLayout(buttonPanel,BoxLayout.Y_AXIS);
-        buttonPanel.setLayout (buttonLayout);
-
-        final int width = 100;
-        final int height = 50;
-        startBtn = new CustomButton("Start game", width, height);
-        selectBtn = new CustomButton("Select maze", width, height);
-        createBtn = new CustomButton("Create maze", width, height);
-
-        buttonPanel.add(startBtn);
-        buttonPanel.add(selectBtn);
-        buttonPanel.add(createBtn);
-
-        add(buttonPanel,BorderLayout.EAST);
-        buttonPanel.setOpaque(false);
-    }
-
     /**
      * Method to put the loaded background image to the JPanel.
      * It uses the predefined method drawImage() from Graphics.
@@ -73,5 +53,28 @@ class StartPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
+    }
+
+    private class StartButtonsPanel extends JPanel{
+        private JButton startBtn;
+        private JButton selectBtn;
+        private JButton createBtn;
+
+        StartButtonsPanel() {
+            BoxLayout buttonLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+            setLayout (buttonLayout);
+
+            final int width = 100;
+            final int height = 50;
+            startBtn = new CustomButton("Start game", width, height);
+            selectBtn = new CustomButton("Select maze", width, height);
+            createBtn = new CustomButton("Create maze", width, height);
+
+            add(startBtn);
+            add(selectBtn);
+            add(createBtn);
+
+            setOpaque(false);
+        }
     }
 }
