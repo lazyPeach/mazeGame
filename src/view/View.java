@@ -31,12 +31,12 @@ public class View extends JFrame{
 	private ScorePanel moves = new ScorePanel();
 	private JTextField movestxt = new JTextField(5);
 	private JTextField finalScore = new JTextField(5);
-	private MazeSelectionPanel comboBoxMaze = new MazeSelectionPanel();
-	private DifficultySelection comboBoxDiff = new DifficultySelection();
+
 	private MazePanel mazePanel = new MazePanel();
 	private FinalBackground finalPanel = new FinalBackground();
 	private int diff = 0;
-	
+
+
 	/**
 	 * Constructor with parameter and instance of Model class.
 	 * In the constructor the path to the project is found which is necessary for sending it further to other classes.
@@ -79,17 +79,18 @@ public class View extends JFrame{
 		startPanel.addCreateListener(createListener);
 	}
 
-	
-	/**
-	 * Method for adding the 'Done' button to buttonPanel.
-	 */
-	public void addDoneButton(){
-		addImageToDoneButton();
-		buttonPanel.add(btnDone);
-		buttonPanel.validate();
-		this.validate();
+	void addDoneListener(ActionListener doneListener) {
+		startPanel.addDoneListener(doneListener);
 	}
-	
+
+	void addMazeComboListener(ActionListener mazeListener) {
+		startPanel.addMazeComboListener(mazeListener);
+	}
+
+	void addDifficultyListener(ActionListener difficultyListener) {
+		startPanel.addDifficultyListener(difficultyListener);
+	}
+
 	/**
 	 * Method for removing the 'Done' button from buttonPanel.
 	 */
@@ -108,56 +109,7 @@ public class View extends JFrame{
 		mazeBackgroundPanel.validate();
 	}
 	
-	/**
-	 * Method for removing the 'Back' button from the panel with the maze.
-	 */
-	public void removeBackButton(){
-		mazeBackgroundPanel.remove(btnBack);
-		mazeBackgroundPanel.validate();
-	}
-	
-	/**
-	 * Method for adding the two ComboBoxes: maze selection and difficulty selection.
-	 * Instances of VoidPanel are used for spacing between components.
-	 * The ComboBoxes are added instead of 'Start' and 'Select' buttons in the right side of the mainPanel.
-	 */
-	public void addComboBox(){
-		//removeButtons();
-		buttonPanel.add(new VoidPanel(35));
-		buttonPanel.add(comboBoxMaze);
-		buttonPanel.add(new VoidPanel(15));
-		buttonPanel.add(comboBoxDiff);
-		buttonPanel.add(new VoidPanel(300));
-		addDoneButton();
-		buttonPanel.add(new VoidPanel(45));
-		buttonPanel.validate();
-		this.validate();
-	}
-	
-	/**
-	 * Method for removing the ComboBox from the mainPanel and adding back the 'Select' and 'Start' buttons. 
-	 */
-	public void removeComboBox(){
-		buttonPanel.removeAll();
-//		addButtons();
-		buttonPanel.validate();
-		this.validate();
-	}
-	
 
-	/**
-	 * Method for adding image to 'Done' button.
-	 */
-	public void addImageToDoneButton(){
-		try {
-			Image img = ImageIO.read(new File("./filesResource/done.jpg"));
-			btnDone.setIcon(new ImageIcon(img));
-			btnDone.setMargin(new Insets(0, 0, 0, 0));//make the whole button an image
-		} catch (IOException excp) {
-			  System.out.println("Exception caught at buffering startButton image" + excp.getMessage());
-		  }
-	}
-	
 	/**
 	 * Method for adding image to 'Back' button.
 	 */
@@ -172,30 +124,7 @@ public class View extends JFrame{
 		  }
 	}
 	
-	/**
-	 * Method for adding listener to 'Start' button.
-	 * @param startLsn
-	 */
-	public void addStartListener(MouseListener startLsn){
-		btnStart.addMouseListener(startLsn);
-	}
-	
-	/**
-	 * Method for adding listener to 'Select' button.
-	 * @param selLsn
-	 */
-	public void addSelectListener(MouseListener selLsn){
-		btnSelect.addMouseListener(selLsn);
-	}
-		
-	/**
-	 * Method for adding listener to 'Done' button.
-	 * @param doneLsn
-	 */
-	public void addDoneListener(MouseListener doneLsn){
-		btnDone.addMouseListener(doneLsn);
-	}
-	
+
 	/**
 	 * Method for adding listener to 'Back' button.
 	 * @param backLsn
@@ -290,7 +219,7 @@ public class View extends JFrame{
 	 * @return the maze name
 	 */
 	public String getMazeName(){
-		mazeName = comboBoxMaze.getMazeName();
+		mazeName = "";//comboBoxMaze.getMazeName();
 		return mazeName;
 	}
 	
@@ -299,7 +228,7 @@ public class View extends JFrame{
 	 * @return the difficulty
 	 */
 	public int getDifficulty(){
-		difficulty = comboBoxDiff.getDifficulty();
+		difficulty = "Easy";//comboBoxDiff.getDifficulty();
 		if (difficulty ==  "Easy") diff = 0;
 		if (difficulty == "Medium") diff = 1;
 		if (difficulty == "Hard") diff = 2;

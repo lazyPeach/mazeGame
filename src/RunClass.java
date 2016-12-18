@@ -11,6 +11,7 @@ import controller.*;
 
 public class RunClass {
 	public static void main(String[] args){
+		MazeSelection selection = new MazeSelection();
 		Model model = new Model();
 		View view = new View(model);
 		Controller cont = new Controller(view,model);
