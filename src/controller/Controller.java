@@ -12,10 +12,8 @@ import java.awt.event.*;
 public class Controller {
 	private View view;
 	private Model model;
-    private MazeSelection mazeSelection;
 
 
-	private String mazeName = new String("maze1");
 	private boolean up, down, left, right;
 
 	private MazeKeyListener listener = new MazeKeyListener();
@@ -23,87 +21,16 @@ public class Controller {
 	/**
 	 * Constructor of Controller class. When creating the controller we also add listeners to all instances of View.
 	 * @param view - instance of View class
-	 * @param model - instance of Model class
 	 */
-	public Controller(View view, Model model, MazeSelection mazeSelection){
+	public Controller(View view, Model model){
 		this.view = view;
 		this.model = model;
-        this.mazeSelection = mazeSelection;
 
-        view.addStartListener(new StartListener());
-        view.addSelectListener(new SelectListener());
-        view.addCreateListener(new CreateListener());
-
-//		view.addDoneListener(new DoneListener());
-//		view.addBackListener(new BackListener());
+        StartController startController = new StartController(view, view.getStartPanel(), model.getMazeSelection());
 	}
 
 
 	// Listeners section
-	/**
-	 * Listener for Start button. The only method necessary form MouseListener is MouseClicked() in which we add the key listener
-	 * to view. At this step we create the maze based on the choice in view or on the implicit maze if there is no choice. 
-	 */
-	//// TODO: 12/18/16
-    private class StartListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            view.addMazeKeyListener(listener);
-            model.createPathToMaze(view.getMazeName());
-            model.loadMaze();
-            model.resetMoves();
-            view.setMazeBackground();
-            view.loadInitialMaze(model.getArray(),model.getLengthI(),model.getLengthJ());
-        }
-	}
-
-	/**
-	 * Listener for Select button. The only method necessary form MouseListener is MouseClicked() in which we call the method addComboBox()
-	 * from View.
-	 */
-	private class SelectListener implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			//TODO
-            //view.addComboBox();
-		}
-	}
-
-    private class CreateListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            //TODO
-            //view.addComboBox();
-        }
-    }
-
-    private class MazeSelectionListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            //TODO
-            //view.addComboBox();
-        }
-    }
-
-    private class DifficultySelectionListener implements ActionListener{
-        public void actionPerformed(ActionEvent e) {
-            //TODO
-            //view.addComboBox();
-        }
-    }
-
-	/**
-	 * Listener for Done button. The only method necessary form MouseListener is MouseClicked() in which we call the method removeComboBox()
-	 * from View and give a value to mazeName. The difficulty is also set.
-	 * @author Lorenzo
-	 *
-	 */
-	class DoneListener implements ActionListener{
-		public void actionPerformed(ActionEvent e){
-            //TODO
-//			view.removeComboBox();
-//			mazeName = view.getMazeName();
-//			model.setDifficulty(view.getDifficulty());
-		}
-	}
-
-
 
 	/**
 	 * Listener for Back button. The only method necessary form MouseListener is MouseClicked() in which we change the content of

@@ -8,56 +8,65 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-class StartPanel extends JPanel {
+public class StartPanel extends JPanel {
     private BufferedImage background;
-    StartButtonsPanel buttonPanel;
-    MazeSelectionPanel mazeSelectionPanel;
+    private JPanel rightPanel;
+    private StartButtonsPanel buttonPanel;
+    private MazeSelectionPanel mazeSelectionPanel;
 
-    /**
-     * Constructor that creates a panel with border layout
-     */
+    private final String BUTTONS = "buttons";
+    private final String MAZE_SELECTION = "mazeSelection";
+
     StartPanel(){
         super(new BorderLayout());
 
         setSize(800, 525);
         setBackgroundImage();
 
+        rightPanel = new JPanel();
+        rightPanel.setLayout(new CardLayout());
+        rightPanel.setOpaque(false);
+
         buttonPanel = new StartButtonsPanel();
         mazeSelectionPanel = new MazeSelectionPanel();
-//        add(buttonPanel, BorderLayout.EAST);
-        add(mazeSelectionPanel, BorderLayout.EAST);
+
+        rightPanel.add(buttonPanel, BUTTONS);
+        rightPanel.add(mazeSelectionPanel, MAZE_SELECTION);
+        add(rightPanel, BorderLayout.EAST);
     }
 
-    void addStartListener(ActionListener startListener) {
+    public void switchToMazeSelection() {
+        CardLayout cl = (CardLayout)(rightPanel.getLayout());
+        cl.show(rightPanel, MAZE_SELECTION);
+    }
+
+    public void switchToStartButtons() {
+        CardLayout cl = (CardLayout)(rightPanel.getLayout());
+        cl.show(rightPanel, BUTTONS);
+    }
+
+    public String getSelectedMaze() {
+        return (String)mazeSelectionPanel.mazeCombo.getSelectedItem();
+    }
+
+    public String getSelectedDifficulty() {
+        return (String)mazeSelectionPanel.difficultyCombo.getSelectedItem();
+    }
+
+    public void addStartListener(ActionListener startListener) {
         buttonPanel.startBtn.addActionListener(startListener);
     }
 
-    void addSelectListener(ActionListener selectListener) {
+    public void addSelectListener(ActionListener selectListener) {
         buttonPanel.selectBtn.addActionListener(selectListener);
     }
 
-    void addCreateListener(ActionListener createListener) {
+    public void addCreateListener(ActionListener createListener) {
         buttonPanel.createBtn.addActionListener(createListener);
     }
 
-    void addDoneListener(ActionListener doneListener) {
+    public void addDoneListener(ActionListener doneListener) {
         mazeSelectionPanel.doneBtn.addActionListener(doneListener);
-    }
-
-    void addMazeComboListener(ActionListener mazeListener) {
-        mazeSelectionPanel.mazeCombo.addActionListener(mazeListener);
-    }
-
-    void addDifficultyListener(ActionListener difficultyListener) {
-        mazeSelectionPanel.difficultyCombo.addActionListener(difficultyListener);
-    }
-
-    private void setBackgroundImage() {
-        try{
-            background= ImageIO.read(new File("./filesResource/mainBackground.jpg"));
-        }catch(IOException excp){
-            System.out.println("Exception caught at buffering image" + excp.getMessage());
-        }
     }
 
     /**
@@ -69,6 +78,20 @@ class StartPanel extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, null);
     }
+
+    private void setBackgroundImage() {
+        try{
+            background= ImageIO.read(new File("./filesResource/mainBackground.jpg"));
+        }catch(IOException excp){
+            System.out.println("Exception caught at buffering image " + excp.getMessage());
+        }
+    }
+
+    public void populateMazeSelectionPanel(String[] mazes, String[] difficulties) {
+        mazeSelectionPanel.setMazes(mazes);
+        mazeSelectionPanel.setDiffictulies(difficulties);
+    }
+
 
     private class StartButtonsPanel extends JPanel{
         private JButton startBtn;
@@ -94,14 +117,8 @@ class StartPanel extends JPanel {
     }
 
     private class MazeSelectionPanel extends JPanel{
-        private String[] difficulties = {"Easy", "Medium","Hard"};
-        private JComboBox difficultyCombo = new JComboBox(difficulties);
-        private String difficulty = new String("Easy");
-
-        private String[] mazeList={"maze1", "maze2"};
-        private JComboBox mazeCombo = new JComboBox(mazeList);
-        private String mazeName = new String("maze1");
-
+        private JComboBox<String> difficultyCombo;
+        private JComboBox<String> mazeCombo;
         private CustomButton doneBtn;
 
         /**
@@ -109,13 +126,12 @@ class StartPanel extends JPanel {
          * The panel' opacity is set for visual purpose: to see the combobox on the main bakground not on a white panel.
          */
         MazeSelectionPanel(){
+            difficultyCombo = new JComboBox<>();
+            mazeCombo = new JComboBox<>();
             doneBtn = new CustomButton("Done", 100, 50);
 
             BoxLayout difficultyLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
             setLayout(difficultyLayout);
-
-            mazeCombo.setSelectedIndex(0);
-            difficultyCombo.setSelectedIndex(0);
 
             mazeCombo.setFont(new Font("", Font.BOLD, 20));
             mazeCombo.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -130,23 +146,18 @@ class StartPanel extends JPanel {
             setOpaque(false);
         }
 
-        /**
-         * Implementation of actionPerformed to take the selection of the maze.
-         * Maze takes the value of the selected item.
-         */
-//        public void actionPerformed(ActionEvent event) {
-//            JComboBox cb = (JComboBox)event.getSource();
-//
-//            mazeName = (String)cb.getSelectedItem();
-//        }
-
-        /**
-         * Method to return the maze selected.
-         * @return mazeName
-         */
-        public String getMazeName(){
-            return mazeName;
+        void setDiffictulies(String[] difficulties) {
+            difficultyCombo.removeAllItems();
+            for(String item : difficulties) {
+                difficultyCombo.addItem(item);
+            }
         }
 
+        void setMazes(String[] mazes) {
+            mazeCombo.removeAllItems();
+            for(String item : mazes) {
+                mazeCombo.addItem(item);
+            }
+        }
     }
 }

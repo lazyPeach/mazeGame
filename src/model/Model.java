@@ -8,6 +8,8 @@ import java.io.*;
  *
  */
 public class Model {
+	private MazeSelection mazeSelection;
+
 	private String mazePath;
 	private String path;
 	private GetPath gp = new GetPath();
@@ -24,10 +26,19 @@ public class Model {
 	 * No-parameter constructor of Model which creates the path to the project.
 	 */
 	public Model(){
-		path = gp.getPath();
+		mazeSelection = new MazeSelection();
+
 	}
-	
-	/**
+
+	public MazeSelection getMazeSelection() {
+        return mazeSelection;
+    }
+
+
+
+    // // TODO: 12/18/16
+
+    /**
 	 * Create the path to the maze selected.
 	 * @param maze - the name of the maze selected
 	 */

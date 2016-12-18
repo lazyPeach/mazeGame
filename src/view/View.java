@@ -9,19 +9,18 @@ import java.io.IOException;
 import java.awt.event.*;
 
 public class View extends JFrame{
-	private static final long serialVersionUID = 1L;
 	private final int width = 800;
 	private final int height = 525;
 	private JPanel mainPanel;
 	private StartPanel startPanel;
 
 
+
+	//// TODO: 12/18/16
 	private String mazeName = new String();
 	private String difficulty = new String();
 	private String path = new String();
 	private Model model = new Model();
-	private JButton btnStart = new JButton();
-	private JButton btnSelect = new JButton();
 	private JButton btnDone = new JButton();
 	private JButton btnBack = new JButton();
 	private JPanel buttonPanel = new JPanel();
@@ -44,17 +43,13 @@ public class View extends JFrame{
 	 * The the close operation, the frame name and the visibility is also set in the constructor.
 	 * @param model
 	 */
-	public View(Model model){
-		this.model=model;
-		path = "";
-
+	public View(){
 		mainPanel = new JPanel();
 		setContentPane(mainPanel);
 		mainPanel.setLayout(new CardLayout());
 
 		startPanel = new StartPanel();
 		mainPanel.add(startPanel, "StartPanel");
-		//constructMainPage();
 
 		this.setTitle("Robot in a Maze");
 		jFrameSetup();
@@ -67,48 +62,39 @@ public class View extends JFrame{
 		setResizable(false);
 	}
 
-	public void addStartListener(ActionListener startListener) {
-		startPanel.addStartListener(startListener);
+	public StartPanel getStartPanel() {
+		return startPanel;
 	}
 
-	public void addSelectListener(ActionListener selectListener) {
-		startPanel.addSelectListener(selectListener);
-	}
+	//// TODO: 12/18/16  
+//	public void showMazeSelection() {
+//		startPanel.switchToMazeSelection();
+//	}
+//
+//	public void showStartButtons() {
+//		startPanel.switchToStartButtons();
+//	}
+//
+//
+//
+//
+//
+//
+//	public void addStartListener(ActionListener startListener) {
+//		startPanel.addStartListener(startListener);
+//	}
+//
+//	public void addSelectListener(ActionListener selectListener) {
+//		startPanel.addSelectListener(selectListener);
+//	}
+//
+//	public void addCreateListener(ActionListener createListener) {
+//		startPanel.addCreateListener(createListener);
+//	}
 
-	public void addCreateListener(ActionListener createListener) {
-		startPanel.addCreateListener(createListener);
-	}
 
-	void addDoneListener(ActionListener doneListener) {
-		startPanel.addDoneListener(doneListener);
-	}
 
-	void addMazeComboListener(ActionListener mazeListener) {
-		startPanel.addMazeComboListener(mazeListener);
-	}
 
-	void addDifficultyListener(ActionListener difficultyListener) {
-		startPanel.addDifficultyListener(difficultyListener);
-	}
-
-	/**
-	 * Method for removing the 'Done' button from buttonPanel.
-	 */
-	public void removeDoneButton(){
-		buttonPanel.remove(btnDone);
-		buttonPanel.validate();
-		this.validate();
-	}
-	
-	/**
-	 * Method for adding 'Back' button to the panel with the maze.
-	 */
-	public void addBackButton(){
-		addImageToBackButton();
-		mazeBackgroundPanel.add(btnBack);
-		mazeBackgroundPanel.validate();
-	}
-	
 
 	/**
 	 * Method for adding image to 'Back' button.
@@ -125,18 +111,6 @@ public class View extends JFrame{
 	}
 	
 
-	/**
-	 * Method for adding listener to 'Back' button.
-	 * @param backLsn
-	 */
-	public void addBackListener(MouseListener backLsn){
-		btnBack.addMouseListener(backLsn);
-	}
-	
-	/**
-	 * Method for adding KeyListener to the frame for moving the robot through the maze.
-	 * @param frameLsn
-	 */
 	public void addMazeKeyListener(KeyListener frameLsn){
 		this.addKeyListener(frameLsn);
 		this.setFocusable(true);
@@ -238,7 +212,7 @@ public class View extends JFrame{
 	/**
 	 * Method for loading the maze in initial state as it is described in the .txt file.
 	 * The maze is added to mazeBackgroundPanel in the left side.
-	 * @param char array with the maze 
+	 * @param array with the maze
 	 * @param lengthI - number of rows
 	 * @param lengthJ - number of columns
 	 */
