@@ -1,12 +1,12 @@
 package view;
 
-import model.Maze;
 import model.Model;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +39,10 @@ public class PlayPanel extends JPanel {
         add(movesPanel);
 
         setBackgroundImage();
+    }
+
+    public void addMazeListener(KeyListener keyEvent) {
+        mazePanel.addMazeListener(keyEvent);
     }
 
     public void addBackListener(ActionListener backListener) {

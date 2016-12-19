@@ -4,18 +4,24 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Vector;
 
 /**
  * Created by lorenzop on 12/18/16.
  */
+
+
 public class Maze {
     public static final int ROWS = 20;
     public static final int COLS = 24;
+
+    public enum Direction {up, down, left, right}
 
     private String mazeName;
     private String mazePath;
     private Difficulty difficulty;
     public char[][] mazeArray;
+    private Vector<Observer> observers = new Vector<>();
 
     public Maze(String mazeName, String mazePath, Difficulty difficulty) {
         this.mazeName = mazeName;
@@ -62,5 +68,76 @@ public class Maze {
         }catch(IOException e){
             System.out.println("IOException when reading the maze: " + e.getMessage());
         }
+    }
+
+    public void subscribe(Observer o) {
+        observers.addElement(o);
+    }
+
+    private void notifyObservers() {
+        for (Observer o : observers) {
+            o.update(mazeArray);
+        }
+    }
+
+    public void move(Direction direction) {
+        if (!isValidMove(direction)) {
+            System.out.println("not a valid move");
+            return;
+        }
+
+        Position robotPosition = getRobotPosition();
+
+        switch (direction) {
+            case up:
+                mazeArray[robotPosition.getI() - 1][robotPosition.getJ()] = 'r';
+                mazeArray[robotPosition.getI()][robotPosition.getJ()] = ' ';
+                break;
+            case down:
+                mazeArray[robotPosition.getI() + 1][robotPosition.getJ()] = 'r';
+                mazeArray[robotPosition.getI()][robotPosition.getJ()] = ' ';
+                break;
+            case left:
+                mazeArray[robotPosition.getI()][robotPosition.getJ() - 1] = 'r';
+                mazeArray[robotPosition.getI()][robotPosition.getJ()] = ' ';
+                break;
+            case right:
+                mazeArray[robotPosition.getI()][robotPosition.getJ() + 1] = 'r';
+                mazeArray[robotPosition.getI()][robotPosition.getJ()] = ' ';
+                break;
+        }
+
+        notifyObservers();
+    }
+
+    private boolean isValidMove(Direction direction) {
+        Position robotPosition = getRobotPosition();
+
+        if (direction == Direction.up && robotPosition.getI() == 0) return false;
+        if (direction == Direction.down && robotPosition.getI() == ROWS - 1) return false;
+        if (direction == Direction.right && robotPosition.getJ() == COLS - 1) return false;
+        if (direction == Direction.left && robotPosition.getJ() == 0) return false;
+
+        return true;
+    }
+
+    private Position getRobotPosition() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (mazeArray[i][j] == 'r') return new Position(i, j);
+            }
+        }
+
+        return new Position(0, 0);
+    }
+
+    private Position getFinishPosition() {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (mazeArray[i][j] == 'f') return new Position(i, j);
+            }
+        }
+
+        return new Position(0, 0);
     }
 }

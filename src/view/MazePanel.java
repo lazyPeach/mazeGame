@@ -1,9 +1,12 @@
 package view;
 
 import model.Maze;
+import model.Observer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyListener;
 
 /**
  * Class in which we create the visual maze.
@@ -11,7 +14,7 @@ import java.awt.*;
  * @author Lorenzo-Eusebio Patras
  *
  */
-public class MazePanel extends JPanel{
+public class MazePanel extends JPanel implements Observer{
 	public static final int WIDTH = 600;
 	public static final int HEIGHT = 500;
 
@@ -20,7 +23,6 @@ public class MazePanel extends JPanel{
 
 
 	private char[][] array = new char[21][30];
-	private int lengthI,lengthJ,robotI,robotJ,i,j,finishI,finishJ,difficulty;
 
 
 	/**
@@ -37,6 +39,14 @@ public class MazePanel extends JPanel{
 		mazeArray = new Entity[Maze.ROWS][Maze.COLS];
 		createArray();
 		addArray();
+
+        maze.subscribe(this);
+
+        setFocusable(true);
+	}
+
+	public void addMazeListener(KeyListener keyEvent) {
+		addKeyListener(keyEvent);
 	}
 
 	/**
@@ -77,6 +87,18 @@ public class MazePanel extends JPanel{
 		}
 	}
 
+	public void update(char[][] mazeArrayRaw) {
+        for (int i = 0; i < Maze.ROWS; i++) {
+            for (int j = 0; j < Maze.COLS; j++) {
+                //mazeArray[i][j] = new Entity();
+                if (mazeArrayRaw[i][j] == ' ') mazeArray[i][j].displayPath();
+                if (mazeArrayRaw[i][j] == 'w') mazeArray[i][j].displayWall();
+                if (mazeArrayRaw[i][j] == 'r') mazeArray[i][j].displayRobot();
+                if (mazeArrayRaw[i][j] == 'f') mazeArray[i][j].displayFinish();
+            }
+        }
+    }
+
 	/**
 	 * Constructor which gets as parameters the char array representing the maze, the number of columns and rows and the difficulty.
 	 * The constructor sets the parameters and calls the method createArray(); 
@@ -86,91 +108,10 @@ public class MazePanel extends JPanel{
 	 * @param difficulty
 	 */
 	
-	/**
-	 * Method to get the row on which the robot is situated.
-	 */
-	public void getRobotI(){
-		for (int i = 0; i<lengthI;i++)
-			for (int j = 0; j<lengthJ; j++)
-				if (array[i][j] == 'r')
-					robotI=i;//works on global variable
-	}
-	
-	/**
-	 * Method to get the column on which the robot is situated.
-	 */
-	public void getRobotJ(){
-		for (int i = 0; i<lengthI;i++)
-			for (int j = 0; j<lengthJ; j++)
-				if (array[i][j] == 'r')
-					robotJ=j;
-	}
-	
-	/**
-	 * Method to get the row on which the finish is situated.
-	 */
-	public void getFinishI(){
-		for (int i = 0; i<lengthI;i++)
-			for (int j = 0; j<lengthJ; j++)
-				if (array[i][j] == 'f')
-					finishI=i;
-	}
-	
-	/**
-	 * Method to get the column on which the finish is situated.
-	 */
-	public void getFinishJ(){
-		for (int i = 0; i<lengthI;i++)
-			for (int j = 0; j<lengthJ; j++)
-				if (array[i][j] == 'f')
-					finishJ=j;
-	}
-	
+
+
 
 	
-	/**
-	 * Method to update the visual maze according to the movement: if we want and can move up switch upper cell with robot, etc.
-	 * It takes as parameters the direction in which we want to move which represents the ability to move in a direction or not.
-	 * If we can move it just changes the actual picture with the next one. As a result robot -> path and path -> robot.
-	 * @param up
-	 * @param right
-	 * @param down
-	 * @param left
-	 */
-//	public void updateEasy(boolean up, boolean right, boolean down, boolean left){
-//
-//		if (up){
-//			mazeArray[robotI][robotJ].update();
-//			mazeArray[robotI-1][robotJ].update();
-//		}
-//		if (right){
-//			mazeArray[robotI][robotJ].update();
-//			mazeArray[robotI][robotJ+1].update();
-//		}
-//		if (down){
-//			mazeArray[robotI][robotJ].update();
-//			mazeArray[robotI+1][robotJ].update();
-//		}
-//		if (left){
-//			mazeArray[robotI][robotJ].update();
-//			mazeArray[robotI][robotJ-1].update();
-//		}
-//		getRobotI();
-//		getRobotJ();
-//	}
-	
-	/**
-	 * Method to update the visual maze according to the movement: if we want and can move up switch upper cell with robot, etc.
-	 * It takes as parameters the direction in which we want to move which represents the ability to move in a direction or not.
-	 * It checks the position of the robot and puts the second image in that panel (i.e. robot image; first image is shadow, 
-	 * second robot and third path). It also updates around the robot calling updateArrountMedium(int robotI, int robotJ).
-	 * This function will keep the track where we have been with the robot.
-	 * Actually the method does not care for the direction. It will update everything around the robot no matter where it goes.
-	 * @param up
-	 * @param right
-	 * @param down
-	 * @param left
-	 */
 //	public void updateMedium(boolean up, boolean right, boolean down, boolean left){
 //		getRobotI();
 //		getRobotJ();
@@ -299,12 +240,5 @@ public class MazePanel extends JPanel{
 //		}
 //	}
 //
-	/**
-	 * Method to verify if the robot is in the final position.
-	 * @return true if the robot is in the final position and false otherwise
-	 */
-	public boolean verifyFinal(){
-		if((robotI == finishI) && (robotJ == finishJ)) return true;
-		else return false;
-	}
+
 }
