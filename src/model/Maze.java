@@ -20,7 +20,7 @@ public class Maze {
     private String mazeName;
     private String mazePath;
     private Difficulty difficulty;
-    public char[][] mazeArray;
+    private char[][] mazeArray;
     private Vector<Observer> observers = new Vector<>();
 
     public Maze(String mazeName, String mazePath, Difficulty difficulty) {
@@ -72,6 +72,7 @@ public class Maze {
 
     public void subscribe(Observer o) {
         observers.addElement(o);
+        o.update(mazeArray);
     }
 
     private void notifyObservers() {
@@ -82,7 +83,6 @@ public class Maze {
 
     public void move(Direction direction) {
         if (!isValidMove(direction)) {
-            System.out.println("not a valid move");
             return;
         }
 
@@ -112,11 +112,30 @@ public class Maze {
 
     private boolean isValidMove(Direction direction) {
         Position robotPosition = getRobotPosition();
+        return isInsideBounds(direction, robotPosition) && isOnPath(direction, robotPosition);
+    }
 
+    private boolean isInsideBounds(Direction direction, Position robotPosition) {
         if (direction == Direction.up && robotPosition.getI() == 0) return false;
         if (direction == Direction.down && robotPosition.getI() == ROWS - 1) return false;
-        if (direction == Direction.right && robotPosition.getJ() == COLS - 1) return false;
         if (direction == Direction.left && robotPosition.getJ() == 0) return false;
+        if (direction == Direction.right && robotPosition.getJ() == COLS - 1) return false;
+
+        return true;
+    }
+
+    private boolean isOnPath(Direction direction, Position robotPosition) {
+        if (direction == Direction.up &&
+                mazeArray[robotPosition.getI() - 1][robotPosition.getJ()] != ' ') return false;
+
+        if (direction == Direction.down &&
+                mazeArray[robotPosition.getI() + 1][robotPosition.getJ()] != ' ') return false;
+
+        if (direction == Direction.left &&
+                mazeArray[robotPosition.getI()][robotPosition.getJ() - 1] != ' ') return false;
+
+        if (direction == Direction.right &&
+                mazeArray[robotPosition.getI()][robotPosition.getJ() + 1] != ' ') return false;
 
         return true;
     }

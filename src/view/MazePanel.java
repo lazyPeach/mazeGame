@@ -61,10 +61,6 @@ public class MazePanel extends JPanel implements Observer{
 			for (int i = 0; i < Maze.ROWS; i++)
 				for (int j = 0; j < Maze.COLS; j++){
 					mazeArray[i][j] = new Entity();
-					if (maze.mazeArray[i][j] == ' ') mazeArray[i][j].displayPath();
-					if (maze.mazeArray[i][j] == 'w') mazeArray[i][j].displayWall();
-					if (maze.mazeArray[i][j] == 'r') mazeArray[i][j].displayRobot();
-					if (maze.mazeArray[i][j] == 'f') mazeArray[i][j].displayFinish();
 				}
 
 //		}
@@ -90,11 +86,11 @@ public class MazePanel extends JPanel implements Observer{
 	public void update(char[][] mazeArrayRaw) {
         for (int i = 0; i < Maze.ROWS; i++) {
             for (int j = 0; j < Maze.COLS; j++) {
-                //mazeArray[i][j] = new Entity();
                 if (mazeArrayRaw[i][j] == ' ') mazeArray[i][j].displayPath();
                 if (mazeArrayRaw[i][j] == 'w') mazeArray[i][j].displayWall();
                 if (mazeArrayRaw[i][j] == 'r') mazeArray[i][j].displayRobot();
                 if (mazeArrayRaw[i][j] == 'f') mazeArray[i][j].displayFinish();
+                if (mazeArrayRaw[i][j] == 's') mazeArray[i][j].displayShadow();
             }
         }
     }
