@@ -251,7 +251,7 @@ public class View extends JFrame{
 		align.setLayout(new BoxLayout(align,BoxLayout.PAGE_AXIS));
 		finalPanel =new FinalPanel(path);
 		finalScore.setEditable(false);
-		finalScore.setText(model.getScore());
+//		finalScore.setText(model.getScore());
 		finalPanel.setLayout(new BorderLayout());
 		finalPanel.add(align,BorderLayout.EAST);
 		finalPanel.repaint();

@@ -1,11 +1,11 @@
 package view;
 
 import model.Maze;
+import model.MazeElement;
 import model.Observer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyListener;
 
 /**
@@ -56,23 +56,11 @@ public class MazePanel extends JPanel implements Observer{
 	 * If not the array is hidden and the area arround the robot and the final cell are visible.
 	 */
 	public void createArray(){
-		//todo check for difficulty
-//		if ( == ){
-			for (int i = 0; i < Maze.ROWS; i++)
-				for (int j = 0; j < Maze.COLS; j++){
-					mazeArray[i][j] = new Entity();
-				}
-
-//		}
-//		else{
-//			for (int i = 0; i<lengthI;i++)
-//				for (int j = 0; j<lengthJ; j++){
-//					mazeArray[i][j]=new Shadow(array[i][j]);
-//				}
-//			mazeArray[robotI][robotJ].updateNext();
-//			mazeArray[finishI][finishJ].updateNext();
-//			updateAroundMedium(robotI,robotJ);
-//		}
+		for (int i = 0; i < Maze.ROWS; i++) {
+			for (int j = 0; j < Maze.COLS; j++) {
+				mazeArray[i][j] = new Entity();
+			}
+		}
 	}
 
 	private void addArray() {
@@ -83,17 +71,29 @@ public class MazePanel extends JPanel implements Observer{
 		}
 	}
 
-	public void update(char[][] mazeArrayRaw) {
-        for (int i = 0; i < Maze.ROWS; i++) {
+	public void update(Maze.UpdateState newState) {
+		switch(newState) {
+			case updateMaze:
+				updateMaze();
+				break;
+			case finishGame:
+				break;
+		}
+    }
+
+	private void updateMaze() {
+		MazeElement[][] mazeArrayRaw = maze.getMazeArray();
+
+		for (int i = 0; i < Maze.ROWS; i++) {
             for (int j = 0; j < Maze.COLS; j++) {
-                if (mazeArrayRaw[i][j] == ' ') mazeArray[i][j].displayPath();
-                if (mazeArrayRaw[i][j] == 'w') mazeArray[i][j].displayWall();
-                if (mazeArrayRaw[i][j] == 'r') mazeArray[i][j].displayRobot();
-                if (mazeArrayRaw[i][j] == 'f') mazeArray[i][j].displayFinish();
-                if (mazeArrayRaw[i][j] == 's') mazeArray[i][j].displayShadow();
+                if (mazeArrayRaw[i][j].element == MazeElement.Element.path) mazeArray[i][j].displayPath();
+                if (mazeArrayRaw[i][j].element == MazeElement.Element.wall) mazeArray[i][j].displayWall();
+                if (mazeArrayRaw[i][j].element == MazeElement.Element.robot) mazeArray[i][j].displayRobot();
+                if (mazeArrayRaw[i][j].element == MazeElement.Element.finish) mazeArray[i][j].displayFinish();
+                if (!mazeArrayRaw[i][j].visibility) mazeArray[i][j].displayShadow();
             }
         }
-    }
+	}
 
 	/**
 	 * Constructor which gets as parameters the char array representing the maze, the number of columns and rows and the difficulty.

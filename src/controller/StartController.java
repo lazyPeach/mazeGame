@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by lorenzop on 12/18/16.
+ *
  */
 public class StartController {
     private View view;
@@ -37,16 +37,9 @@ public class StartController {
      * Listener for Start button. The only method necessary form MouseListener is MouseClicked() in which we add the key listener
      * to view. At this step we create the maze based on the choice in view or on the implicit maze if there is no choice.
      */
-    //// TODO: 12/18/16
     private class StartListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             view.switchToPlay();
-//            view.addMazeKeyListener(listener);
-//            model.createPathToMaze(view.getMazeName());
-//            model.loadMaze();
-//            model.resetMoves();
-//            view.setMazeBackground();
-//            view.loadInitialMaze(model.getArray(),model.getLengthI(),model.getLengthJ());
         }
     }
 
@@ -61,6 +54,7 @@ public class StartController {
         }
     }
 
+    //// TODO: 12/20/16 switch to create panel
     private class CreateListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             view.switchToCreate();
